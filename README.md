@@ -1,50 +1,138 @@
-# Welcome to your Expo app 👋
+Aqui está um **README detalhado** para o projeto Expo (React Native) que você enviou. O conteúdo foi gerado com base nos arquivos reais, dependências e funcionalidades atuais do app:
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+# 📱 Projeto Expo - App Mobile
 
-1. Install dependencies
+Este é um projeto desenvolvido com [Expo](https://expo.dev/) utilizando o `expo-router` para rotas baseadas em arquivos. O app possui autenticação, consumo de API com `axios`, cache de dados com `React Query`, e uso de componentes estilizados com `RNEUI`.
 
-   ```bash
-   npm install
-   ```
+## 🚀 Tecnologias e Bibliotecas Utilizadas
 
-2. Start the app
+### 📦 Dependências principais
 
-   ```bash
-   npx expo start
-   ```
+| Biblioteca                                                                                                        | Descrição                                                   |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `expo`                                                                                                            | Framework que simplifica o desenvolvimento com React Native |
+| `expo-router`                                                                                                     | Sistema de rotas baseado em arquivos para projetos Expo     |
+| `@tanstack/react-query`                                                                                           | Gerenciamento de estado e cache para dados assíncronos      |
+| `axios`                                                                                                           | Cliente HTTP para comunicação com APIs                      |
+| `expo-secure-store`                                                                                               | Armazenamento seguro para dados sensíveis como tokens       |
+| `react-hook-form`                                                                                                 | Controle de formulários com validações                      |
+| `@rneui/themed` e `@rneui/base`                                                                                   | Componentes estilizados reutilizáveis (UI)                  |
+| `react-navigation`                                                                                                | Navegação por abas e pilha no app                           |
+| `expo-haptics`, `expo-blur`, `expo-constants`, `expo-splash-screen`, `expo-image`, `expo-font`, `expo-status-bar` | Vários recursos nativos do Expo utilizados no app           |
+| `react-native-safe-area-context`, `react-native-gesture-handler`, `react-native-screens`                          | Melhor experiência e controle de gestos e layout            |
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🏗️ Estrutura do Projeto
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+projeto/
+│
+├── app/                    # Estrutura de rotas (expo-router)
+│   ├── _layout.tsx        # Layout principal da navegação
+│   ├── index.tsx          # Página inicial (home)
+│   └── (auth)/            # Rotas relacionadas à autenticação
+│       ├── _layout.tsx
+│       └── index.tsx
+│
+├── api/                   # Configuração do cliente Axios
+│   ├── client.ts          # Setup com interceptors e token
+│   └── index.ts           # (Pode ser usado para exportações agrupadas)
+│
+├── utils/                 # Utilitários
+│   └── handleAxiosError.ts # Tratamento de erros do Axios com Alert
+│
+├── assets/                # Fontes, imagens, logos
+│
+├── package.json           # Dependências e scripts
+└── tsconfig.json          # Configurações TypeScript
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🔐 Autenticação e Segurança
 
-To learn more about developing your project with Expo, look at the following resources:
+O token JWT é armazenado de forma segura usando o `expo-secure-store`. Antes de cada requisição, o `axios` injeta automaticamente o token no header `Authorization`.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Exemplo:
 
-## Join the community
+```ts
+api.interceptors.request.use(async (config) => {
+  const token = await SecureStore.getItemAsync("token");
+  if (token && config.headers) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return config;
+});
+```
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## ❗ Tratamento de Erros
+
+Todos os erros de requisições são tratados por um utilitário:
+
+```ts
+import { handleAxiosError } from "@/utils/handleAxiosError";
+
+try {
+  await api.get("/user");
+} catch (err) {
+  handleAxiosError(err);
+}
+```
+
+Isso exibe um `Alert` amigável ao usuário com a mensagem de erro vinda da API ou uma mensagem genérica.
+
+---
+
+## ⚙️ Scripts Disponíveis
+
+| Comando                 | Descrição                              |
+| ----------------------- | -------------------------------------- |
+| `npm start`             | Inicia o servidor Expo                 |
+| `npm run android`       | Inicia o app no emulador Android       |
+| `npm run ios`           | Inicia o app no simulador iOS          |
+| `npm run web`           | Inicia o app no navegador              |
+| `npm run reset-project` | Limpa o projeto e recria arquivos base |
+
+---
+
+## 📦 Como instalar e rodar
+
+```bash
+# 1. Instale as dependências
+npm install
+
+# 2. Rode o projeto
+npx expo start
+```
+
+---
+
+## ✍️ Como implementar novas funcionalidades
+
+### 1. Criar uma nova tela
+
+Crie um novo arquivo `.tsx` em `app/` ou `app/(auth)/`:
+
+O `expo-router` detecta automaticamente a rota: `/profile`.
+
+### 2. Fazer uma requisição com React Query
+
+```tsx
+import { useQuery } from "@tanstack/react-query";
+import api from "@/api/client";
+
+const fetchUser = () => api.get("/user").then((res) => res.data);
+
+export function useUser() {
+  return useQuery(["user"], fetchUser);
+}
+```
+
+---
+
+Se desejar, posso gerar um README em formato Markdown pronto para ser colado no GitHub. Deseja isso?
