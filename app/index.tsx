@@ -1,7 +1,7 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginMutation } from "@/features/auth/hooks/useLoginMutation";
 import { Image } from "expo-image";
-import { Redirect, usePathname } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -22,10 +22,8 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const pathname = usePathname();
-  console.log("Current Pathname:", pathname);
   const { isAuthenticated, loading } = useAuth();
-
+  const route = useRouter();
   const {
     control,
     handleSubmit,
@@ -134,6 +132,20 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Entrar</Text>
         )}
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.buttonLow}
+        onPress={() => route.push("/adminRegistry")}
+      >
+        <Text style={styles.buttonText}>Cadastrar Administrador</Text>
+      </TouchableOpacity>
+
+      {/* <TouchableOpacity
+        style={styles.buttonLow}
+        onPress={() => navigation.navigate("Recuperar Senha")}
+      >
+        <Text style={styles.buttonText}>Recuperar senha</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -197,5 +209,13 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "contain",
     marginBottom: 40,
+  },
+  buttonLow: {
+    width: 280,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000000",
+    borderRadius: 8,
   },
 });

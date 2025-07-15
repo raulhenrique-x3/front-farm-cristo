@@ -1,12 +1,11 @@
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function AppLayout() {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Redirect href="/" />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Redirect href="/" />;
+  // }
 
   return (
     <Stack
