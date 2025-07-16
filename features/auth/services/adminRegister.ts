@@ -1,6 +1,8 @@
 import api from "@/api/client";
 import { IRegisterPayload, IRegisterPayloadResponse } from "../types/auth";
 
+const API_MASTER_KEY = process.env.EXPO_PUBLIC_API_MASTER_KEY;
+
 export const register = async (
   payload: IRegisterPayload
 ): Promise<IRegisterPayloadResponse> => {
@@ -10,7 +12,7 @@ export const register = async (
       payload,
       {
         params: {
-          "x-master-key": "cwlYn4fEsLFgcFMEBW0FLGPLzcOwYagG",
+          "x-master-key": API_MASTER_KEY,
         },
       }
     );
