@@ -6,7 +6,7 @@ export const register = async (
 ): Promise<IRegisterPayloadResponse> => {
   try {
     const response = await api.post<IRegisterPayloadResponse>(
-      "/register",
+      "/auth/register",
       payload,
       {
         params: {
