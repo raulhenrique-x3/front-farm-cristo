@@ -17,7 +17,6 @@ export default function HomeScreen() {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { data, isLoading, isError, isRefetching } = useGetAllUsers();
-  console.log("Dados dos usuários:", data);
   const filteredList = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );

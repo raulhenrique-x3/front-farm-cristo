@@ -5,7 +5,7 @@ import { register } from "../services/adminRegister";
 export const useAdminRegisterMutation = () => {
   return useMutation({
     mutationFn: register,
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       Alert.alert("Sucesso", "Administrador cadastrado com sucesso!");
     },
     onError: (error: any) => {

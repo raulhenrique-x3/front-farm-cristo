@@ -4,7 +4,6 @@ import { Redirect, Tabs } from "expo-router";
 
 export default function AppLayout() {
   const { isAuthenticated } = useAuth();
-  console.log("Is Authenticated:", isAuthenticated);
   if (!isAuthenticated) {
     return <Redirect href="/" />;
   }
