@@ -93,29 +93,6 @@ export default function HomeScreen() {
         }
         contentContainerStyle={{ paddingBottom: 25 }}
       />
-
-      <View style={styles.bottomBar}>
-        <Icon
-          name="home"
-          type="feather"
-          color="#fff"
-          onPress={() => route.push("/home")}
-        />
-        <Icon
-          name="box"
-          type="feather"
-          color="#fff"
-          onPress={() => route.push("/(auth)/home")}
-        />
-        <Icon
-          name="log-out"
-          type="feather"
-          color="#fff"
-          onPress={async () => {
-            route.push("/");
-          }}
-        />
-      </View>
     </View>
   );
 }
