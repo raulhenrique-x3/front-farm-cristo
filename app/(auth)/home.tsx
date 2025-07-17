@@ -2,13 +2,20 @@ import { useGetAllUsers } from "@/features/user/hooks/useGetAllUsers";
 import { Avatar, Icon, SearchBar } from "@rneui/themed";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [search, setSearch] = useState("");
   const route = useRouter();
-  const { data } = useGetAllUsers();
-  console.log("Dados recebidos:", data);
+  const { data, isLoading, isError, isRefetching } = useGetAllUsers();
 
   const filteredList = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
@@ -23,6 +30,26 @@ export default function HomeScreen() {
       return "gray";
     }
   };
+
+  if (isLoading || isRefetching) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  if (isError) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color={"#f00000"} />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
 
   const renderItem = ({ item }: any) => (
     <View style={styles.card}>
@@ -136,5 +163,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 20,
     height: 35,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
