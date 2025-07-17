@@ -17,19 +17,16 @@ export default function HomeScreen() {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { data, isLoading, isError, isRefetching } = useGetAllUsers();
-
+  console.log("Dados dos usuários:", data);
   const filteredList = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getAvatarIcon = (thing: any) => {
-    if (thing === "idoso") {
+  const getAvatarIcon = (type: string) => {
+    if (type === "eldery") {
       return "human-cane";
-    } else if (thing === "doador") {
-      return "hand-heart";
-    } else {
-      return "gray";
     }
+    return "hand-heart";
   };
 
   if (isLoading || isRefetching) {
@@ -57,7 +54,7 @@ export default function HomeScreen() {
       <Avatar
         rounded
         icon={{
-          name: getAvatarIcon(item.category),
+          name: getAvatarIcon(item.type),
           type: "material-community",
         }}
         containerStyle={{ backgroundColor: "#666" }}

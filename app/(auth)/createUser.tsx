@@ -15,7 +15,6 @@ import {
 type FormData = {
   name: string;
   birthDate: string;
-  mother: string;
   cpf: string;
   type: "eldery" | "donor";
 };
@@ -32,7 +31,6 @@ export default function CreateUser() {
       name: "",
       birthDate: "",
       type: type,
-      mother: "",
       cpf: "",
     },
   });
@@ -40,6 +38,7 @@ export default function CreateUser() {
   const { mutate } = useCreateUserMutation();
 
   const createUser = (data: FormData) => {
+    console.log("Dados do usuário:", data);
     mutate(data, {
       onSuccess: () => {
         Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
@@ -60,7 +59,11 @@ export default function CreateUser() {
           name="name"
           rules={{ required: "Nome é obrigatório" }}
           render={({ field: { onChange, value } }) => (
-            <TextInput style={styles.input} value={value} onChange={onChange} />
+            <TextInput
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+            />
           )}
         />
         {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
@@ -101,23 +104,15 @@ export default function CreateUser() {
           control={control}
           name="birthDate"
           render={({ field: { onChange, value } }) => (
-            <TextInput style={styles.input} value={value} onChange={onChange} />
+            <TextInput
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+            />
           )}
         />
         {errors.birthDate && (
           <Text style={styles.error}>{errors.birthDate.message}</Text>
-        )}
-
-        <Text style={styles.label}>Nome da mãe:</Text>
-        <Controller
-          control={control}
-          name="mother"
-          render={({ field: { onChange, value } }) => (
-            <TextInput style={styles.input} value={value} onChange={onChange} />
-          )}
-        />
-        {errors.mother && (
-          <Text style={styles.error}>{errors.mother.message}</Text>
         )}
 
         <Text style={styles.label}>CPF:</Text>
@@ -132,7 +127,11 @@ export default function CreateUser() {
             },
           }}
           render={({ field: { onChange, value } }) => (
-            <TextInput style={styles.input} value={value} onChange={onChange} />
+            <TextInput
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+            />
           )}
         />
         {errors.cpf && <Text style={styles.error}>{errors.cpf.message}</Text>}
