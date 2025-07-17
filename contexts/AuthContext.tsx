@@ -10,6 +10,7 @@ interface AuthContextData {
     id: string
   ) => Promise<void>;
   logout: () => Promise<void>;
+  userId: string | null;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -18,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadStorageData = useCallback(async () => {
@@ -26,8 +28,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(false);
   }, []);
 
+  const updateUserId = async () => {
+    const id = await SecureStore.getItemAsync("id");
+    setUserId(id);
+  };
+
   useEffect(() => {
     loadStorageData();
+    updateUserId();
   }, []);
 
   const handleAuth = async (
@@ -39,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await SecureStore.setItemAsync("refresh_token", String(refreshToken));
     await SecureStore.setItemAsync("id", String(id));
     setIsAuthenticated(true);
+    setUserId(id);
   };
 
   const logout = async () => {
@@ -49,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, handleAuth, logout, loading }}
+      value={{ isAuthenticated, handleAuth, logout, loading, userId }}
     >
       {children}
     </AuthContext.Provider>

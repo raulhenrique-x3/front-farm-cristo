@@ -87,15 +87,7 @@ export default function AppLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Perfil",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="user" size={size} color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="products"
         options={{
@@ -112,6 +104,15 @@ export default function AppLayout() {
           href: null,
           tabBarIcon: ({ color, size }) => (
             <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Perfil",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" size={size} color={color} />
           ),
         }}
       />

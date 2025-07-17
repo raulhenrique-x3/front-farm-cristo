@@ -1,75 +1,76 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useGetUser } from "@/features/user/hooks/useGetUser";
 import { Feather } from "@expo/vector-icons";
 import { Avatar, Button } from "@rneui/themed";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Profile() {
   const router = useRouter();
-  const { logout } = useAuth();
-
+  const { userId, logout } = useAuth();
+  const { data } = useGetUser(userId);
   const handleLogout = async () => {
     await logout();
     router.replace("/");
   };
 
   return (
-    <View style={styles.container}>
-      <Avatar
-        rounded
-        icon={{ name: "user", type: "feather" }}
-        containerStyle={styles.avatar}
-        size="xlarge"
-      />
-      <Text style={styles.name}>Nome do Usuário</Text>
-      <Text style={styles.role}>Categoria: Idoso</Text>
-
-      <View style={styles.buttonGroup}>
-        <Button
-          title="Editar Perfil"
-          buttonStyle={styles.button}
-          titleStyle={{ color: "#000000" }}
-          icon={
-            <Feather
-              name="edit-2"
-              size={18}
-              color="#000000"
-              style={styles.icon}
-            />
-          }
-        />
-
-        <Button
-          title="Excluir Conta"
-          buttonStyle={styles.buttonRed}
-          icon={
-            <Feather
-              name="trash-2"
-              size={18}
-              color="#fff"
-              style={styles.icon}
-            />
-          }
-        />
-
-        <Button
-          title="Sair"
-          type="outline"
-          buttonStyle={styles.buttonLogout}
-          titleStyle={{ color: "#2CA8E8" }}
-          icon={
+    <>
+      <Stack.Screen
+        options={{
+          title: "Perfil",
+          headerRight: () => (
             <Feather
               name="log-out"
-              size={18}
-              color="#2CA8E8"
-              style={styles.icon}
+              size={24}
+              color="#000000"
+              style={{ marginRight: 16 }}
+              onPress={handleLogout}
             />
-          }
-          onPress={handleLogout}
+          ),
+        }}
+      />
+      <View style={styles.container}>
+        <Avatar
+          rounded
+          icon={{ name: "user", type: "feather" }}
+          containerStyle={styles.avatar}
+          size="xlarge"
         />
+        <Text style={styles.name}>{data?.name}</Text>
+        <Text style={styles.role}>{data?.type}</Text>
+
+        <View style={styles.buttonGroup}>
+          <Button
+            title="Editar Perfil"
+            buttonStyle={styles.button}
+            titleStyle={{ color: "#000000" }}
+            icon={
+              <Feather
+                name="edit-2"
+                size={18}
+                color="#000000"
+                style={styles.icon}
+              />
+            }
+          />
+
+          <Button
+            title="Excluir Conta"
+            buttonStyle={styles.buttonRed}
+            icon={
+              <Feather
+                name="trash-2"
+                size={18}
+                color="#fff"
+                style={styles.icon}
+              />
+            }
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
