@@ -6,7 +6,6 @@ export const useCreateUserMutation = () => {
   return useMutation({
     mutationFn: createUser,
     onSuccess: async (data) => {
-      console.log("Usuário cadastrado", data);
       queryClient.invalidateQueries({ queryKey: ["getAllUsers"] });
     },
     onError: (error: any) => {

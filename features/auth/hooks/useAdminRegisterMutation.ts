@@ -7,7 +7,6 @@ export const useAdminRegisterMutation = () => {
     mutationFn: register,
     onSuccess: async (data) => {
       Alert.alert("Sucesso", "Administrador cadastrado com sucesso!");
-      console.log("Administrador cadastrado", data);
     },
     onError: (error: any) => {
       Alert.alert("Erro", error.response?.message || "Erro no cadastro.");
