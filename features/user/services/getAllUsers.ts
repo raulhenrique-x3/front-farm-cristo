@@ -1,9 +1,9 @@
 import api from "@/api/client";
-import { IGetAllUsersResponse } from "../types/getUser";
+import { IUser } from "../types/getUser";
 
-export const getAllUsers = async (): Promise<IGetAllUsersResponse> => {
+export const getAllUsers = async (): Promise<IUser[]> => {
   try {
-    const response = await api.get<IGetAllUsersResponse>("/user/get-all");
+    const response = await api.get<IUser[]>("/user/get-all");
     return response.data;
   } catch (error) {
     console.error("Get all users error:", error);
