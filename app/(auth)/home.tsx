@@ -1,6 +1,7 @@
 import { useGetAllUsers } from "@/features/user/hooks/useGetAllUsers";
+import { Feather } from "@expo/vector-icons";
 import { Avatar, Icon, SearchBar } from "@rneui/themed";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -14,7 +15,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [search, setSearch] = useState("");
-  const route = useRouter();
+  const router = useRouter();
   const { data, isLoading, isError, isRefetching } = useGetAllUsers();
 
   const filteredList = data?.filter((item) =>
@@ -69,31 +70,47 @@ export default function HomeScreen() {
         name="chevron-right"
         type="feather"
         color="#ccc"
-        onPress={() => route.push("/(auth)/profile")}
+        onPress={() => router.push("/(auth)/profile")}
       />
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={filteredList}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={renderItem}
-        ListHeaderComponent={
-          <SearchBar
-            placeholder="Pesquisar..."
-            onChangeText={setSearch}
-            value={search}
-            containerStyle={styles.searchContainer}
-            inputContainerStyle={styles.searchInput}
-            lightTheme
-            round
-          />
-        }
-        contentContainerStyle={{ paddingBottom: 25 }}
+    <>
+      <Stack.Screen
+        options={{
+          title: "Página Inicial",
+          headerRight: () => (
+            <Feather
+              name="plus"
+              size={24}
+              color="#000000"
+              style={{ marginRight: 16 }}
+              onPress={() => router.push("/(auth)/createUser")}
+            />
+          ),
+        }}
       />
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          data={filteredList}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={renderItem}
+          ListHeaderComponent={
+            <SearchBar
+              placeholder="Pesquisar..."
+              onChangeText={setSearch}
+              value={search}
+              containerStyle={styles.searchContainer}
+              inputContainerStyle={styles.searchInput}
+              lightTheme
+              round
+            />
+          }
+          contentContainerStyle={{ paddingBottom: 25 }}
+        />
+      </View>
+    </>
   );
 }
 
