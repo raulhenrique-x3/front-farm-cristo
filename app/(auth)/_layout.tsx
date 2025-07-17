@@ -1,18 +1,18 @@
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Feather } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 
 export default function AppLayout() {
-  // const { isAuthenticated } = useAuth();
-
-  // if (!isAuthenticated) {
-  //   return <Redirect href="/" />;
-  // }
+  const { isAuthenticated } = useAuth();
+  console.log("Is Authenticated:", isAuthenticated);
+  if (!isAuthenticated) {
+    return <Redirect href="/" />;
+  }
 
   return (
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: true,
-
         tabBarActiveTintColor: "#000000",
         tabBarInactiveTintColor: "#b4b4b4",
         tabBarStyle: {
@@ -85,6 +85,15 @@ export default function AppLayout() {
           href: null,
           tabBarIcon: ({ color, size }) => (
             <Feather name="clock" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Perfil",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" size={size} color={color} />
           ),
         }}
       />

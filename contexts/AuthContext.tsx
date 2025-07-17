@@ -35,9 +35,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refreshToken: string,
     id: string
   ) => {
-    await SecureStore.setItemAsync("token", token);
-    await SecureStore.setItemAsync("refresh_token", refreshToken);
-    await SecureStore.setItemAsync("id", id);
+    await SecureStore.setItemAsync("token", String(token));
+    await SecureStore.setItemAsync("refresh_token", String(refreshToken));
+    await SecureStore.setItemAsync("id", String(id));
     setIsAuthenticated(true);
   };
 

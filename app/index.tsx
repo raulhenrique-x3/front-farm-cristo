@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 type FormData = {
   email: string;
   password: string;
