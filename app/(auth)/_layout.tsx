@@ -96,6 +96,25 @@ export default function AppLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="products"
+        options={{
+          title: "Produtos",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="createProduct"
+        options={{
+          title: "Criar Produto",
+          href: null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
