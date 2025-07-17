@@ -1,3 +1,4 @@
+import * as SecureStore from "expo-secure-store";
 import { Button } from "@rneui/themed";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -11,11 +12,11 @@ import {
 } from "react-native";
 
 type FormData = {
-  nome: string;
-  dataNasc: string;
-  nomeMae: string;
+  name: string;
+  birth: string;
+  mother: string;
   cpf: string;
-  categoria: string;
+  category: string;
 };
 
 export default function PersonEdit() {
@@ -28,11 +29,11 @@ export default function PersonEdit() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      nome: "",
-      dataNasc: "",
-      nomeMae: "",
+      name: "",
+      birth: "",
+      mother: "",
       cpf: "",
-      categoria: "null",
+      category: "null",
     },
   });
 
@@ -42,7 +43,7 @@ export default function PersonEdit() {
 
   const handleCategoria = (categoria: string) => {
     setCategoriaSelecionada(categoria);
-    setValue("categoria", categoria);
+    setValue("category", categoria);
   };
 
   return (
@@ -51,7 +52,7 @@ export default function PersonEdit() {
         <Text style={styles.label}>Editar nome:</Text>
         <Controller
           control={control}
-          name="nome"
+          name="name"
           rules={{ required: "Nome é obrigatório" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
@@ -61,7 +62,7 @@ export default function PersonEdit() {
             />
           )}
         />
-        {errors.nome && <Text style={styles.error}>{errors.nome.message}</Text>}
+        {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
         <Text style={styles.label}>Editar categoria:</Text>
         <View style={styles.radioContainer}>
@@ -100,12 +101,12 @@ export default function PersonEdit() {
           </TouchableOpacity>
         </View>
 
-        <Controller control={control} name="categoria" render={() => <></>} />
+        <Controller control={control} name="category" render={() => <></>} />
 
         <Text style={styles.label}>Editar data de nascimento:</Text>
         <Controller
           control={control}
-          name="dataNasc"
+          name="birth"
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
@@ -118,7 +119,7 @@ export default function PersonEdit() {
         <Text style={styles.label}>Editar nome da mãe:</Text>
         <Controller
           control={control}
-          name="nomeMae"
+          name="mother"
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}

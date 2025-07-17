@@ -1,91 +1,21 @@
 import { Avatar, Icon, SearchBar } from "@rneui/themed";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 
 // ESTA LISTA ESTÁ AQUI TEMPORARIAMENTE PARA FINS DE TESTE, ATÉ QUE SEJA FEITA A REQUISIÇÃO PRO BACK-END COM A VERDADEIRA LISTA DE IDOSOS //
 
 export const list = [
-  {
-    id: 1,
-    name: "João Silva",
-    nascimento: "1990-08-25",
-    cpf: "112.233.445-66",
-    categoria: "doador",
-    mae: "Ana Silva",
-  },
-  {
-    id: 2,
-    name: "Ana Oliveira",
-    nascimento: "1988-05-12",
-    cpf: "223.344.556-77",
-    categoria: "idoso",
-    mae: "Sônia Oliveira",
-  },
-  {
-    id: 3,
-    name: "Carlos Souza",
-    nascimento: "1995-02-10",
-    cpf: "334.455.667-88",
-    categoria: "idoso",
-    mae: "Tereza Souza",
-  },
-  {
-    id: 4,
-    name: "Fernanda Costa",
-    nascimento: "1992-09-15",
-    cpf: "445.566.778-99",
-    categoria: "doador",
-    mae: "Mariana Costa",
-  },
-  {
-    id: 5,
-    name: "Roberto Pereira",
-    nascimento: "1983-11-05",
-    cpf: "556.677.889-00",
-    categoria: "idoso",
-    mae: "Luciana Pereira",
-  },
-  {
-    id: 6,
-    name: "Jorge Silva",
-    nascimento: "1990-08-25",
-    cpf: "112.233.445-66",
-    categoria: "doador",
-    mae: "Ana Silva",
-  },
-  {
-    id: 7,
-    name: "Patricia Oliveira",
-    nascimento: "1988-05-12",
-    cpf: "223.344.556-77",
-    categoria: "doador",
-    mae: "Sônia Oliveira",
-  },
-  {
-    id: 8,
-    name: "Mario Souza",
-    nascimento: "1995-02-10",
-    cpf: "334.455.667-88",
-    categoria: "idoso",
-    mae: "Tereza Souza",
-  },
-  {
-    id: 9,
-    name: "Talita Costa",
-    nascimento: "1992-09-15",
-    cpf: "445.566.778-99",
-    categoria: "idoso",
-    mae: "Mariana Costa",
-  },
-  {
-    id: 10,
-    name: "Claudia Pereira",
-    nascimento: "1983-11-05",
-    cpf: "556.677.889-00",
-    categoria: "idoso",
-    mae: "Luciana Pereira",
-  },
+  { id: '1', name: 'João Silva', birth: '1990-08-25', cpf: '112.233.445-66', category: 'doador', mother: 'Ana Silva', },
+  { id: '2', name: 'Ana Oliveira', birth: '1988-05-12', cpf: '223.344.556-77', category: 'idoso', mother: 'Sônia Oliveira', },
+  { id: '3', name: 'Carlos Souza', birth: '1995-02-10', cpf: '334.455.667-88', category: 'idoso', mother: 'Tereza Souza', },
+  { id: '4', name: 'Fernanda Costa', birth: '1992-09-15', cpf: '445.566.778-99', category: 'doador', mother: 'Mariana Costa', },
+  { id: '5', name: 'Roberto Pereira', birth: '1983-11-05', cpf: '556.677.889-00', category: 'idoso', mother: 'Luciana Pereira', },
+  { id: '6', name: 'Jorge Silva', birth: '1990-08-25', cpf: '112.233.445-66', category: 'doador', mother: 'Ana Silva', },
+  { id: '7', name: 'Patricia Oliveira', birth: '1988-05-12', cpf: '223.344.556-77', category: 'doador', mother: 'Sônia Oliveira', },
+  { id: '8', name: 'Mario Souza', birth: '1995-02-10', cpf: '334.455.667-88', category: 'idoso', mother: 'Tereza Souza', },
+  { id: '9', name: 'Talita Costa', birth: '1992-09-15', cpf: '445.566.778-99', category: 'idoso', mother: 'Mariana Costa', },
+  { id: '10', name: 'Claudia Pereira', birth: '1983-11-05', cpf: '556.677.889-00', category: 'idoso', mother: 'Luciana Pereira', }
 ];
 
 // EXCLUIR ESTA LISTA ASSIM QUE A CONEXÃO COM O BACK-END ESTIVER ATIVA //
@@ -99,18 +29,6 @@ export default function HomeScreen() {
   const filteredList = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
-
-  /* useEffect(() => {
-     const checkAuth = async () => {
-       const token = await AsyncStorage.getItem('token');
-       if (!token) {
-         Alert.alert('Sessão expirada', 'Você precisa fazer login novamente.');
-         navigation.replace('Login');
-       }
-     };
- 
-     checkAuth();
-   }, []); */
 
   const getAvatarIcon = (thing: any) => {
     if (thing === "idoso") {
@@ -127,7 +45,7 @@ export default function HomeScreen() {
       <Avatar
         rounded
         icon={{
-          name: getAvatarIcon(item.categoria),
+          name: getAvatarIcon(item.category),
           type: "material-community",
         }}
         containerStyle={{ backgroundColor: "#666" }}

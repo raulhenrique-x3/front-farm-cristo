@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "#ff6b6b",
-    marginBottom: 8,
+    marginBottom: 10,
     marginLeft: 4,
   },
   image: {
