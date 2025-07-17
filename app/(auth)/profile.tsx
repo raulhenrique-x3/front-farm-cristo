@@ -1,5 +1,5 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useGetUser } from "@/features/user/hooks/useGetUser";
+import { useGetPharmaceutical } from "@/features/pharmaceutical/hooks/useGetUser";
 import { Feather } from "@expo/vector-icons";
 import { Avatar, Button } from "@rneui/themed";
 import { Stack, useRouter } from "expo-router";
@@ -9,7 +9,8 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Profile() {
   const router = useRouter();
   const { userId, logout } = useAuth();
-  const { data } = useGetUser(userId);
+  const { data } = useGetPharmaceutical(userId);
+
   const handleLogout = async () => {
     await logout();
     router.replace("/");
@@ -39,7 +40,7 @@ export default function Profile() {
           size="xlarge"
         />
         <Text style={styles.name}>{data?.name}</Text>
-        <Text style={styles.role}>{data?.type}</Text>
+        <Text style={styles.role}>{data?.email}</Text>
 
         <View style={styles.buttonGroup}>
           <Button
