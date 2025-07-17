@@ -1,6 +1,5 @@
 import { useCreateUserMutation } from "@/features/user/hooks/useCreateUserMutation";
 import { Button } from "@rneui/themed";
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -21,9 +20,7 @@ type FormData = {
   type: "eldery" | "donor";
 };
 
-export default function CadastroPessoa() {
-  const route = useRouter();
-
+export default function CreateUser() {
   const [type, setType] = useState<"eldery" | "donor">("eldery");
 
   const {
