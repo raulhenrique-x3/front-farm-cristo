@@ -38,7 +38,6 @@ export default function CreateUser() {
   const { mutate } = useCreateUserMutation();
 
   const createUser = (data: FormData) => {
-    console.log("Dados do usuário:", data);
     mutate(data, {
       onSuccess: () => {
         Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
@@ -164,20 +163,18 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderWidth: 2,
-    borderColor: "#7ac4e9",
-
+    borderWidth: 1,
+    borderColor: "#000000",
     // Sombras para iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-
     // Sombra para Android
     elevation: 4,
   },
   button: {
-    backgroundColor: "#2CA8E8",
+    backgroundColor: "#000000",
     width: 280,
     height: 48,
     borderRadius: 50,
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 15,
     fontWeight: "500",
-    color: "#2CA8E8",
+    color: "#000000",
   },
   radioContainer: {
     flexDirection: "row",
@@ -198,17 +195,17 @@ const styles = StyleSheet.create({
   radioButton: {
     padding: 10,
     borderWidth: 1,
-    borderColor: "#2CA8E8",
+    borderColor: "#000000",
     borderRadius: 20,
     width: 100,
     alignItems: "center",
   },
   radioText: {
-    color: "#2CA8E8",
+    color: "#000000",
   },
   radioSelected: {
     color: "#fff",
-    backgroundColor: "#2CA8E8",
+    backgroundColor: "#000000",
   },
   error: {
     color: "#ff6b6b",

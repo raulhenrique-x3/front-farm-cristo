@@ -83,7 +83,7 @@ export default function AdminRegistry() {
           <Text style={styles.error}>{errors.email.message}</Text>
         )}
 
-        <Text style={styles.label}>CRF do farmacêutico:</Text>
+        <Text style={styles.label}>Senha do farmacêutico:</Text>
         <Controller
           control={control}
           name="password"

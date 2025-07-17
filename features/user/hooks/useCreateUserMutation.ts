@@ -1,3 +1,4 @@
+import { queryClient } from "@/api";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../services/createUser";
 
@@ -6,6 +7,7 @@ export const useCreateUserMutation = () => {
     mutationFn: createUser,
     onSuccess: async (data) => {
       console.log("Usuário cadastrado", data);
+      queryClient.invalidateQueries({ queryKey: ["getAllUsers"] });
     },
     onError: (error: any) => {
       console.error(

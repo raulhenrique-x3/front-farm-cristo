@@ -44,6 +44,7 @@ export default function HomeScreen() {
       <SafeAreaProvider>
         <SafeAreaView style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color={"#f00000"} />
+          <Text>Erro ao carregar usuários...</Text>
         </SafeAreaView>
       </SafeAreaProvider>
     );

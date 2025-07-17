@@ -3,6 +3,7 @@ import { getAllUsers } from "../services/getAllUsers";
 
 const options = {
   staleTime: 1000 * 60 * 5, // 5 minutes
+  refetchInterval: 1000 * 60,
 };
 
 export const useGetAllUsers = () => {
