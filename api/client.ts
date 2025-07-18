@@ -8,7 +8,7 @@ import * as SecureStore from "expo-secure-store";
 // O endereço IPv4 será algo como `192.168.1.179`.
 
 const api = axios.create({
-  baseURL: "http://192.168.30.87:8000", // COLOQUE SEU ENDEREÇO IPV4
+  baseURL: "http://192.168.1.179:8000", // COLOQUE SEU ENDEREÇO IPV4
   headers: {
     "Content-Type": "application/json",
   },

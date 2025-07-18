@@ -108,6 +108,16 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
+        name="editProduct"
+        options={{
+          title: "Editar Produto",
+          href: null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",

@@ -1,5 +1,8 @@
-import { useCreateProductMutation } from "@/features/products/hooks/useCreateProduct";
+import { useEditProductMutation } from "@/features/products/hooks/useEditProductMutation";
+import { useGetProductById } from "@/features/products/hooks/useGetProductById";
 import { Button } from "@rneui/themed";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
@@ -11,12 +14,15 @@ import {
 } from "react-native";
 
 type FormData = {
+  id: number;
   name: string;
   quantity: number;
   category: string;
 };
 
-function CreateProduct() {
+function EditProduct() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data } = useGetProductById(id as string);
   const {
     control,
     handleSubmit,
@@ -30,19 +36,33 @@ function CreateProduct() {
     },
   });
 
-  const { mutate } = useCreateProductMutation();
+  useEffect(() => {
+    if (data) {
+      reset({
+        id: Number(id),
+        name: data.name,
+        quantity: data.quantity,
+        category: data.category,
+      });
+    }
+  }, [data, reset, id]);
 
-  const createProduct = (data: FormData) => {
-    mutate(data, {
-      onSuccess: () => {
-        Alert.alert("Sucesso", "Produto cadastrado com sucesso!");
-        reset();
-      },
-      onError: (error: any) => {
-        Alert.alert("Erro", "Erro ao cadastrar produto");
-        console.error("Cadastro error:", error);
-      },
-    });
+  const { mutate } = useEditProductMutation();
+
+  const editProduct = (payload: FormData) => {
+    mutate(
+      { id, payload },
+      {
+        onSuccess: () => {
+          Alert.alert("Sucesso", "Produto editado com sucesso!");
+          reset();
+        },
+        onError: (error: any) => {
+          Alert.alert("Erro", "Erro ao editar produto");
+          console.error("Edição error:", error);
+        },
+      }
+    );
   };
 
   return (
@@ -88,7 +108,7 @@ function CreateProduct() {
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
-              value={value?.toString()}
+              value={String(value)}
               onChangeText={(text) => onChange(Number(text))}
               keyboardType="numeric"
             />
@@ -101,7 +121,7 @@ function CreateProduct() {
 
       <Button
         title="Cadastrar"
-        onPress={handleSubmit(createProduct)}
+        onPress={handleSubmit(editProduct)}
         buttonStyle={styles.button}
         titleStyle={{ fontWeight: "bold", fontSize: 16 }}
       />
@@ -109,7 +129,7 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default EditProduct;
 
 const styles = StyleSheet.create({
   container: {

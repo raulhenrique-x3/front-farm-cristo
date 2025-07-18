@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -45,7 +46,15 @@ function Products() {
   }
 
   const renderItem = ({ item }: any) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        router.push({
+          pathname: "/(auth)/editProduct",
+          params: { id: item.id },
+        })
+      }
+    >
       <Avatar
         rounded
         icon={{
@@ -57,14 +66,12 @@ function Products() {
       />
       <View style={{ marginLeft: 12, flex: 1 }}>
         <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={{ color: "#666" }}>
+          {item.quantity} unidades - {item.category}
+        </Text>
       </View>
-      <Icon
-        name="chevron-right"
-        type="feather"
-        color="#ccc"
-        // onPress={() => router.push(`/(auth)/product/${item.id}`)}
-      />
-    </View>
+      <Icon name="chevron-right" type="feather" color="#ccc" />
+    </TouchableOpacity>
   );
 
   return (
