@@ -15,7 +15,10 @@ export const useDonateMedicineMutation = () => {
       donateMedicine(elderlyId, medicineId, quantity),
     onSuccess: async () => {
       queryClient.invalidateQueries({
-        queryKey: ["getAllProducts", "getProductsByCategory"],
+        queryKey: ["getAllProducts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getProductsByCategory", "Remédio"],
       });
       Alert.alert("Sucesso", "Produto doado com sucesso!");
     },
