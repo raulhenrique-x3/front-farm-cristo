@@ -16,11 +16,11 @@ type FormData = {
   name: string;
   birthDate: string;
   cpf: string;
-  type: "eldery" | "donor";
+  type: "elderly" | "donor";
 };
 
 export default function CreateUser() {
-  const [type, setType] = useState<"eldery" | "donor">("eldery");
+  const [type, setType] = useState<"elderly" | "donor">("elderly");
 
   const {
     control,
@@ -72,12 +72,15 @@ export default function CreateUser() {
           <TouchableOpacity
             style={[
               styles.radioButton,
-              type === "eldery" && styles.radioSelected,
+              type === "elderly" && styles.radioSelected,
             ]}
-            onPress={() => setType("eldery")}
+            onPress={() => setType("elderly")}
           >
             <Text
-              style={[styles.radioText, type === "eldery" && { color: "#fff" }]}
+              style={[
+                styles.radioText,
+                type === "elderly" && { color: "#fff" },
+              ]}
             >
               Idoso
             </Text>

@@ -1,4 +1,5 @@
 import { useGetAllUsers } from "@/features/user/hooks/useGetAllUsers";
+import { IUser } from "@/features/user/types/getUser";
 import { Feather } from "@expo/vector-icons";
 import { Avatar, Icon, SearchBar } from "@rneui/themed";
 import { Stack, useRouter } from "expo-router";
@@ -9,6 +10,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -22,7 +24,7 @@ export default function HomeScreen() {
   );
 
   const getAvatarIcon = (type: string) => {
-    if (type === "eldery") {
+    if (type === "elderly") {
       return "human-cane";
     }
     return "hand-heart";
@@ -49,8 +51,16 @@ export default function HomeScreen() {
     );
   }
 
-  const renderItem = ({ item }: any) => (
-    <View style={styles.card}>
+  const renderItem = ({ item }: { item: IUser }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        router.push({
+          pathname: "/(auth)/elderlyDetailing",
+          params: { id: item.id },
+        })
+      }
+    >
       <Avatar
         rounded
         icon={{
@@ -62,14 +72,12 @@ export default function HomeScreen() {
       />
       <View style={{ marginLeft: 12, flex: 1 }}>
         <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={{ color: "#666" }}>
+          CPF: {item.cpf} - {item.type}
+        </Text>
       </View>
-      <Icon
-        name="chevron-right"
-        type="feather"
-        color="#ccc"
-        onPress={() => router.push("/(auth)/profile")}
-      />
-    </View>
+      <Icon name="chevron-right" type="feather" color="#ccc" />
+    </TouchableOpacity>
   );
 
   return (

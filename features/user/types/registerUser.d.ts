@@ -2,7 +2,7 @@ export interface IRegisterUserPayload {
   name: string;
   birthDate: string;
   cpf: string;
-  type: "eldery" | "donor";
+  type: "elderly" | "donor";
 }
 
 export interface IRegisterUserResponse {
@@ -10,5 +10,5 @@ export interface IRegisterUserResponse {
   name: string;
   birthDate: string;
   cpf: string;
-  type: "eldery" | "donor";
+  type: "elderly" | "donor";
 }

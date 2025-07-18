@@ -118,6 +118,26 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
+        name="elderlyDetailing"
+        options={{
+          title: "Detalhes do Idoso",
+          href: null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="donateMedicine"
+        options={{
+          title: "Doar Medicamento",
+          href: null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",
