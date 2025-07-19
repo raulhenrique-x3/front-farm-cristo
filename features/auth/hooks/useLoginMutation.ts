@@ -9,7 +9,6 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
-      console.log("Login successful:", data);
       await handleAuth(data.token, data.refresh_token, data.id);
     },
     onError: (error: any) => {
