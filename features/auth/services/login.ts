@@ -7,8 +7,11 @@ export const login = async (
   try {
     const response = await api.post<ILoginResponse>("/auth/login/", payload);
     return response.data;
-  } catch (error) {
-    console.error("Login error:", error);
+  } catch (error: any) {
+    console.log("Login error FULL:", JSON.stringify(error));
+    console.log("Request:", error?.config);
+    console.log("Code:", error?.code);
+    console.log("Message:", error?.message);
     throw new Error("Login failed. Please try again.");
   }
 };

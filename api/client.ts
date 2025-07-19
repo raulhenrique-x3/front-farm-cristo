@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 // PARA OBTER O ENDEREÇO IPV4
 // Abra o terminal e execute o comando: `ifconfig` (Linux/Mac) ou `ipconfig` (Windows).
 // Procure pela interface de rede que você está usando
@@ -8,7 +9,7 @@ import * as SecureStore from "expo-secure-store";
 // O endereço IPv4 será algo como `192.168.1.179`.
 
 const api = axios.create({
-  baseURL: "http://20.55.35.233:8000", // COLOQUE SEU ENDEREÇO IPV4
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },

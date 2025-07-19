@@ -9,11 +9,16 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
+      console.log("Login successful:", data);
       await handleAuth(data.token, data.refresh_token, data.id);
     },
     onError: (error: any) => {
-      Alert.alert("Erro", error.response?.message || "Erro no login.");
-      console.error("Login error:", error?.response?.message || error.message);
+      console.error("Login error FULL:", JSON.stringify(error));
+
+      const message =
+        error?.response?.data?.message || error?.message || "Erro no login.";
+
+      Alert.alert("Erro", message);
     },
   });
 };

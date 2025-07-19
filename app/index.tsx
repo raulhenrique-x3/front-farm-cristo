@@ -65,6 +65,7 @@ const LoginScreen = () => {
         source={require("../assets/logoAbrigo.jpeg")}
         style={styles.image}
       />
+
       <Controller
         control={control}
         name="email"
