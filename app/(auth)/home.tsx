@@ -30,6 +30,41 @@ export default function HomeScreen() {
     return "hand-heart";
   };
 
+  if (data?.length === 0 && !isLoading && !isRefetching) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={[
+            styles.container,
+            styles.horizontal,
+            {
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 24,
+              backgroundColor: "#f8f9fa",
+            },
+          ]}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 20,
+              fontSize: 16,
+              color: "#555",
+              lineHeight: 24,
+            }}
+          >
+            Nenhum usuário encontrado.
+            {"\n"}
+            <Text style={{ fontWeight: "bold", color: "#007AFF" }}>
+              Clique no ícone de &quot;+&quot; para adicionar um novo usuário.
+            </Text>
+          </Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
   if (isLoading || isRefetching) {
     return (
       <SafeAreaProvider>
@@ -43,9 +78,17 @@ export default function HomeScreen() {
   if (isError) {
     return (
       <SafeAreaProvider>
-        <SafeAreaView style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" color={"#f00000"} />
-          <Text>Erro ao carregar usuários...</Text>
+        <SafeAreaView
+          style={[
+            styles.container,
+            styles.horizontal,
+            { justifyContent: "center", alignItems: "center" },
+          ]}
+        >
+          <View>
+            <ActivityIndicator size="large" color={"#f00000"} />
+            <Text>Erro ao carregar usuários...</Text>
+          </View>
         </SafeAreaView>
       </SafeAreaProvider>
     );
