@@ -1,6 +1,5 @@
 import { useCreateUserMutation } from "@/features/user/hooks/useCreateUserMutation";
 import { Button } from "@rneui/themed";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
@@ -8,9 +7,10 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { MaskedTextInput } from "react-native-mask-text";
+import RNPickerSelect from "react-native-picker-select";
 
 type FormData = {
   name: string;
@@ -20,8 +20,6 @@ type FormData = {
 };
 
 export default function CreateUser() {
-  const [type, setType] = useState<"elderly" | "donor">("elderly");
-
   const {
     control,
     handleSubmit,
@@ -30,7 +28,7 @@ export default function CreateUser() {
     defaultValues: {
       name: "",
       birthDate: "",
-      type: type,
+      type: "elderly",
       cpf: "",
     },
   });
@@ -59,6 +57,7 @@ export default function CreateUser() {
           rules={{ required: "Nome é obrigatório" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
+              placeholder="Digite o nome"
               style={styles.input}
               value={value}
               onChangeText={onChange}
@@ -68,45 +67,35 @@ export default function CreateUser() {
         {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
         <Text style={styles.label}>Categoria:</Text>
-        <View style={styles.radioContainer}>
-          <TouchableOpacity
-            style={[
-              styles.radioButton,
-              type === "elderly" && styles.radioSelected,
-            ]}
-            onPress={() => setType("elderly")}
-          >
-            <Text
-              style={[
-                styles.radioText,
-                type === "elderly" && { color: "#fff" },
+        <Controller
+          control={control}
+          name="type"
+          render={({ field: { onChange, value } }) => (
+            <RNPickerSelect
+              onValueChange={(value) => onChange(value)}
+              value={value}
+              items={[
+                { label: "Idoso", value: "elderly" },
+                { label: "Doador", value: "donor" },
               ]}
-            >
-              Idoso
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.radioButton,
-              type === "donor" && styles.radioSelected,
-            ]}
-            onPress={() => setType("donor")}
-          >
-            <Text
-              style={[styles.radioText, type === "donor" && { color: "#fff" }]}
-            >
-              Doador
-            </Text>
-          </TouchableOpacity>
-        </View>
+              placeholder={{ label: "Selecione a categoria...", value: null }}
+              style={{
+                inputIOS: styles.picker,
+                inputAndroid: styles.picker,
+              }}
+            />
+          )}
+        />
+        {errors.type && <Text style={styles.error}>{errors.type.message}</Text>}
 
         <Text style={styles.label}>Data de nascimento:</Text>
         <Controller
           control={control}
           name="birthDate"
           render={({ field: { onChange, value } }) => (
-            <TextInput
+            <MaskedTextInput
+              mask="99/99/9999"
+              placeholder="DD/MM/AAAA"
               style={styles.input}
               value={value}
               onChangeText={onChange}
@@ -129,7 +118,9 @@ export default function CreateUser() {
             },
           }}
           render={({ field: { onChange, value } }) => (
-            <TextInput
+            <MaskedTextInput
+              mask="999.999.999-99"
+              placeholder="000.000.000-00"
               style={styles.input}
               value={value}
               onChangeText={onChange}
@@ -167,7 +158,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: "#cecece",
     // Sombras para iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -176,6 +167,19 @@ const styles = StyleSheet.create({
     // Sombra para Android
     elevation: 4,
   },
+  picker: {
+    backgroundColor: "#fff",
+    color: "black",
+    width: 320,
+    height: 50,
+    borderRadius: 50,
+    padding: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#000000",
+  },
+
   button: {
     backgroundColor: "#000000",
     width: 280,
@@ -214,7 +218,6 @@ const styles = StyleSheet.create({
     color: "#ff6b6b",
     fontSize: 13,
     marginLeft: 12,
-    marginTop: -8,
     marginBottom: 8,
   },
 });
