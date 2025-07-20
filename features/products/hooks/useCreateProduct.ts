@@ -5,7 +5,7 @@ import { createProduct } from "../services/createProduct";
 export const useCreateProductMutation = () => {
   return useMutation({
     mutationFn: createProduct,
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["getAllProducts"] });
     },
     onError: (error: any) => {
