@@ -1,7 +1,9 @@
+import { useDeleteProductMutation } from "@/features/products/hooks/useDeleteProductMutation";
 import { useEditProductMutation } from "@/features/products/hooks/useEditProductMutation";
 import { useGetProductById } from "@/features/products/hooks/useGetProductById";
+import { Feather } from "@expo/vector-icons";
 import { Button } from "@rneui/themed";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -12,6 +14,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
 
 type FormData = {
   id: number;
@@ -21,6 +24,7 @@ type FormData = {
 };
 
 function EditProduct() {
+  const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data } = useGetProductById(id as string);
   const {
@@ -48,6 +52,7 @@ function EditProduct() {
   }, [data, reset, id]);
 
   const { mutate } = useEditProductMutation();
+  const { mutate: deleteProduct } = useDeleteProductMutation();
 
   const editProduct = (payload: FormData) => {
     mutate(
@@ -65,67 +70,110 @@ function EditProduct() {
     );
   };
 
+  const handleDelete = () => {
+    deleteProduct(id as string, {
+      onSuccess: () => {
+        Alert.alert("Sucesso", "Produto excluído com sucesso!");
+        router.push("/(auth)/products");
+      },
+      onError: (error: any) => {
+        Alert.alert("Erro", "Erro ao excluir produto");
+        console.error("Exclusão error:", error);
+      },
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.label}>Nome:</Text>
-        <Controller
-          control={control}
-          name="name"
-          rules={{ required: "Nome é obrigatório" }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
+    <>
+      <Stack.Screen
+        options={{
+          title: "Editar Produto",
+          headerRight: () => (
+            <Feather
+              name="trash-2"
+              size={24}
+              color="#ff0000"
+              style={{ marginRight: 16 }}
+              onPress={handleDelete}
             />
-          )}
-        />
-        {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
-
-        <Text style={styles.label}>Categoria:</Text>
-
-        <Controller
-          control={control}
-          name="category"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
-            />
-          )}
-        />
-        {errors.category && (
-          <Text style={styles.error}>{errors.category.message}</Text>
-        )}
-
-        <Text style={styles.label}>Quantidade:</Text>
-        <Controller
-          control={control}
-          name="quantity"
-          rules={{ required: "Quantidade é obrigatória" }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              value={String(value)}
-              onChangeText={(text) => onChange(Number(text))}
-              keyboardType="numeric"
-            />
-          )}
-        />
-        {errors.quantity && (
-          <Text style={styles.error}>{errors.quantity.message}</Text>
-        )}
-      </ScrollView>
-
-      <Button
-        title="Cadastrar"
-        onPress={handleSubmit(editProduct)}
-        buttonStyle={styles.button}
-        titleStyle={{ fontWeight: "bold", fontSize: 16 }}
+          ),
+        }}
       />
-    </View>
+      <View style={styles.container}>
+        <ScrollView>
+          <Text style={styles.label}>Nome:</Text>
+          <Controller
+            control={control}
+            name="name"
+            rules={{ required: "Nome é obrigatório" }}
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                value={value}
+                onChangeText={onChange}
+              />
+            )}
+          />
+          {errors.name && (
+            <Text style={styles.error}>{errors.name.message}</Text>
+          )}
+
+          <Text style={styles.label}>Categoria:</Text>
+          <Controller
+            control={control}
+            name="category"
+            render={({ field: { onChange, value } }) => (
+              <RNPickerSelect
+                onValueChange={(value) => onChange(value)}
+                value={value}
+                items={[
+                  { label: "Medicamentos", value: "medicines" },
+                  { label: "Higiene", value: "hygiene" },
+                  { label: "Alimentos", value: "food" },
+                  { label: "Limpeza", value: "cleaning" },
+                  { label: "Vestuário", value: "clothing" },
+                  { label: "Lazer", value: "leisure" },
+                  { label: "Outros", value: "others" },
+                ]}
+                placeholder={{ label: "Selecione a categoria...", value: null }}
+                style={{
+                  inputIOS: styles.picker,
+                  inputAndroid: styles.picker,
+                }}
+              />
+            )}
+          />
+          {errors.category && (
+            <Text style={styles.error}>{errors.category.message}</Text>
+          )}
+
+          <Text style={styles.label}>Quantidade:</Text>
+          <Controller
+            control={control}
+            name="quantity"
+            rules={{ required: "Quantidade é obrigatória" }}
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                value={String(value)}
+                onChangeText={(text) => onChange(Number(text))}
+                keyboardType="numeric"
+              />
+            )}
+          />
+          {errors.quantity && (
+            <Text style={styles.error}>{errors.quantity.message}</Text>
+          )}
+        </ScrollView>
+
+        <Button
+          title="Cadastrar"
+          onPress={handleSubmit(editProduct)}
+          buttonStyle={styles.button}
+          titleStyle={{ fontWeight: "bold", fontSize: 16 }}
+        />
+      </View>
+    </>
   );
 }
 
@@ -149,7 +197,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: "#cecece",
     // Sombras para iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -196,7 +244,18 @@ const styles = StyleSheet.create({
     color: "#ff6b6b",
     fontSize: 13,
     marginLeft: 12,
-    marginTop: -8,
     marginBottom: 8,
+  },
+  picker: {
+    backgroundColor: "#fff",
+    color: "black",
+    width: 320,
+    height: 50,
+    borderRadius: 50,
+    padding: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#000000",
   },
 });

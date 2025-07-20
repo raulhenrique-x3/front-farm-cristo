@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
 
 type FormData = {
   name: string;
@@ -56,6 +57,7 @@ function CreateProduct() {
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
+              placeholder="Digite o nome"
               value={value}
               onChangeText={onChange}
             />
@@ -64,15 +66,27 @@ function CreateProduct() {
         {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
         <Text style={styles.label}>Categoria:</Text>
-
         <Controller
           control={control}
           name="category"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
+            <RNPickerSelect
+              onValueChange={(value) => onChange(value)}
               value={value}
-              onChangeText={onChange}
+              items={[
+                { label: "Medicamentos", value: "medicines" },
+                { label: "Higiene", value: "hygiene" },
+                { label: "Alimentos", value: "food" },
+                { label: "Limpeza", value: "cleaning" },
+                { label: "Vestuário", value: "clothing" },
+                { label: "Lazer", value: "leisure" },
+                { label: "Outros", value: "others" },
+              ]}
+              placeholder={{ label: "Selecione a categoria...", value: null }}
+              style={{
+                inputIOS: styles.picker,
+                inputAndroid: styles.picker,
+              }}
             />
           )}
         />
@@ -129,7 +143,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: "#cecece",
     // Sombras para iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -176,7 +190,18 @@ const styles = StyleSheet.create({
     color: "#ff6b6b",
     fontSize: 13,
     marginLeft: 12,
-    marginTop: -8,
     marginBottom: 8,
+  },
+  picker: {
+    backgroundColor: "#fff",
+    color: "black",
+    width: 320,
+    height: 50,
+    borderRadius: 50,
+    padding: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#000000",
   },
 });

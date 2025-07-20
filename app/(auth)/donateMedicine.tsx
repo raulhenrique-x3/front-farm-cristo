@@ -24,7 +24,7 @@ function DonateMedicine() {
   const { elderlyId } = useLocalSearchParams<{ elderlyId: string }>();
 
   const { data, isLoading, isError, isRefetching } =
-    useGetProductsByCategory("Remédio");
+    useGetProductsByCategory("medicines");
 
   const filteredList = data?.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
