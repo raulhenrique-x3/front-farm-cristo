@@ -23,6 +23,7 @@ export default function CreateUser() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -39,6 +40,7 @@ export default function CreateUser() {
     mutate(data, {
       onSuccess: () => {
         Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        reset();
       },
       onError: (error: any) => {
         Alert.alert("Erro", "Erro ao cadastrar usuário");
