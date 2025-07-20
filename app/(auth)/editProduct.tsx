@@ -71,16 +71,33 @@ function EditProduct() {
   };
 
   const handleDelete = () => {
-    deleteProduct(id as string, {
-      onSuccess: () => {
-        Alert.alert("Sucesso", "Produto excluído com sucesso!");
-        router.push("/(auth)/products");
-      },
-      onError: (error: any) => {
-        Alert.alert("Erro", "Erro ao excluir produto");
-        console.error("Exclusão error:", error);
-      },
-    });
+    Alert.alert(
+      "Confirmar exclusão",
+      "Tem certeza que deseja excluir este produto?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: () => {
+            deleteProduct(id as string, {
+              onSuccess: () => {
+                Alert.alert("Sucesso", "Produto excluído com sucesso!");
+                router.push("/(auth)/products");
+              },
+              onError: (error: any) => {
+                Alert.alert("Erro", "Erro ao excluir produto");
+                console.error("Exclusão error:", error);
+              },
+            });
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   return (
